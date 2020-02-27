@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Buscador</title>
+</head>
+<body>
+	<!-- Inicio del Menú -->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	  <a class="navbar-brand" href="#">Navbar</a>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	    <span class="navbar-toggler-icon"></span>
+	  </button>
+	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+	    <ul class="navbar-nav mr-auto">
+	      <li class="nav-item active">
+	        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="#">LINK 1</a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="#">LINK 2</a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="#">LINK 3</a>
+	      </li>
+	    </ul>
+		<form class="form-inline">
+			<input class="form-control mr-sm-2" type="search" id="buscador" placeholder="Buscar" aria-label="Buscar">
+		</form>
+	  </div>
+	</nav>
+	<!--Fin del Menú-->
+	<div class="container">
+		<table id="result" class="table table-hover table-sm" hidden="hidden">
+		  <thead>
+		    <tr>
+		      <th scope="col">#</th>
+		      <th scope="col">Mercado</th>
+		      <th scope="col">Nivel 2</th>
+					<th scope="col">Nivel 3</th>
+					<th scope="col">Resolución</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		  </tbody>
+		</table>
+	</div>
+</body>
+	<!-- Hoja de estilo del Bootstrap -->
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+	<!-- Este es el JQUERY -->
+	<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+	<!-- Estos son los Jquery del Bootstrap -->
+	<script type="text/javascript" src="bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+	<!-- El código generico -->
+	<script type="text/javascript">
+		$(function() {
+			var automoviles = [
+				["Prepago","Soporte","No Navega","Reporte"],
+				["Prepago","Soporte","No Genera y/o No Recibe Llamadas","Reporte"],
+				["Prepago","Soporte","No Envía y/o No Recibe SMS","Reporte"],
+				["Prepago", "Reclamo","Ajuste de saldo","Reporte"],
+				["Pospago", "Reclamo","Cobro en factura","Reporte"],
+				["Pospago", "Reclamo","No recibe factura","Reporte"],
+			];
+			var resultados = [];
+			var html_error = "<div class='alert alert-danger' role='alert'>#Replace</div>";
+			var tabla_result = "";
+			var tr_result = "";
+			$("#buscador").keyup(function(){
+				var busqueda = $("#buscador").val();
+				$("#result tbody").html("");
+			  resultados = filterItems(busqueda);
+			  if (resultados.length == 0){
+			  	html_error = html_error.replace("#Replace","Sin Resultados");
+			  	$(".container").html(html_error);
+			  }else{
+			  	$("#result").removeAttr("hidden");
+					for (var i = 0; i < resultados.length; i++) {
+						tr_result = "<tr>";
+						tr_result += "<td>" + (i+1) + "</td><td>" + resultados[i][0] + "</td><td>" + resultados[i][1] + "</td><td>" + resultados[i][2] + "</td><td>" + resultados[i][3] + "</td>";
+						tr_result += "</tr>";
+						$("#result tbody").append(tr_result);
+					}
+			  }
+			});
+
+			function filterItems(query) {
+			  return automoviles.filter(function(el){
+			      return el[1].toLowerCase().indexOf(query.toLowerCase()) > -1;
+			  })
+			}
+		});
+	</script>
+</html>
